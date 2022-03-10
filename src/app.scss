@@ -30,10 +30,35 @@
   }
 }
 
+.app-tab-link {
+  margin-right: 1rem;
+
+  &.active {
+    color: #000000;
+    text-decoration: none;
+    cursor: default;
+  }
+}
+
+.app-sub {
+  span {
+    display: inline-block;
+    margin-top: 0.75em;
+  }
+}
+
 .app-sub-input {
   border: none;
+  border-radius: 0;
   border-bottom: 0.1em solid #000000;
   outline: none;
-  width: 1.75em;
   text-align: center;
+
+  &.app-sft-input {
+    width: 1.75em;
+  }
+
+  &.app-aff-input {
+    width: 5em;
+  }
 }

@@ -1,21 +1,24 @@
 import { useEffect, useState } from 'react'
 import distribution from './utilities/distribution'
-import shift from './utilities/shift'
+import gcd from './utilities/gcd'
+import substitute from './utilities/substitute'
 import './app.scss'
 
 import type { ChangeEvent } from 'react'
 
 export const letters = new Set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
-export const let2num = (s: string) => s.toUpperCase().charCodeAt(0) - 65
-export const num2let = (n: number) => String.fromCharCode(n + 65)
+export const let2num = (s: string) => s.toUpperCase().charCodeAt(0) - 65 + 1
+export const num2let = (n: number) => String.fromCharCode(n + 65 - 1)
 export const mod = (n: number, m: number) => (((n % m) + m) % m)
 
 function App () {
   const [input, setInput] = useState('')
   const [output, setOutput] = useState('')
   const [dist, setDist] = useState<NodeJS.Dict<number>>({})
-  const [subInput, setSubInput] = useState<[string, string]>(['', ''])
-  const [offset, setOffset] = useState(0)
+  const [tab, setTab] = useState(0)
+  const [sftInput, setSftInput] = useState<[string, string]>(['', ''])
+  const [shift, setShift] = useState(0)
+  const [affInput, setAffInput] = useState<[string, string]>(['1', '0'])
 
   const resize = () => {
     const arr = document.getElementsByTagName('textarea')
@@ -25,29 +28,29 @@ function App () {
     }
   }
 
-  useEffect(() => {
-    resize()
-    setDist(distribution(input))
-  }, [input])
+  useEffect(() => setDist(distribution(input)), [input])
+  useEffect(() => resize(), [input, output])
 
   useEffect(() => {
-    const [a, b] = subInput
+    const [a, b] = sftInput
     if (a === '' || b === '') {
-      setOffset(0)
+      setShift(0)
       return
     }
     const os = let2num(b) - let2num(a)
-    setOffset(os)
-    console.log(os)
-  }, [subInput])
+    setShift(os)
+  }, [sftInput])
 
   useEffect(() => {
-    setOutput(shift(input, offset))
-  }, [input, offset])
-
-  useEffect(() => {
-    resize()
-  }, [output])
+    if (tab === 0) {
+      setOutput(substitute(input, shift))
+    }
+    if (tab === 1) {
+      const [a, b] = affInput.map((s) => parseInt(s))
+      if (isNaN(a) || isNaN(b)) return
+      setOutput(substitute(input, b, a))
+    }
+  }, [tab, input, shift, affInput])
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const el = e.target
@@ -65,15 +68,30 @@ function App () {
     }
   }
 
-  const handleSubInputChange = (i: number, e: ChangeEvent<HTMLInputElement>) => {
-    const s = e.target.value.toUpperCase()
+  const handleSftInputChange = (i: number, id: string | undefined, e: ChangeEvent<HTMLInputElement>) => {
+    const s = e.target.value.trim().toUpperCase()
     if (s.length > 1 || (s.length !== 0 && !letters.has(s))) return
-    const a: [string, string] = [ ...subInput ]
+    const a: [string, string] = [ ...sftInput ]
     a[i] = s
-    setSubInput(a)
-    if (i === 0 && s.length !== 0) {
-      (document.getElementsByClassName('app-sub-input')[1] as HTMLInputElement).focus()
+      setSftInput(a)
+    if (id !== undefined && s.length !== 0) {
+      (document.getElementById(id) as HTMLInputElement).focus()
     }
+  }
+
+  const handleAffInputChange = (i: number, e: ChangeEvent<HTMLInputElement>) => {
+    const s = e.target.value.trim()
+    if (s.includes('-') && s.substring(1).includes('-')) return
+    const n = parseInt(s)
+    if (s.length !== 0 && s !== '-' && (isNaN(n) || (i === 0 && n === 0))) return
+    const a: [string, string] = [ ...affInput ]
+    a[i] = s.length > 1 ? '' + n : s
+    const [b, c] = [parseInt(a[0]), parseInt(a[1])]
+    if (!isNaN(b) && !isNaN(c) && c > 0 && gcd(b, c) !== 1) {
+      alert(`${b} and ${c} are not relatively prime.`)
+      return
+    }
+    setAffInput(a)
   }
 
   return (
@@ -147,31 +165,87 @@ function App () {
       <div
         className='app-section'
       >
-        <span
-          className='fw-bold'
-        >
-          Shift Substitution
-        </span>
         <div>
-          <input
-            className='app-sub-input font-monospace'
-            type='text'
-            value={subInput[0]}
-            onChange={handleSubInputChange.bind(null, 0)}
-          />
-          &rarr;
-          <input
-            className='app-sub-input font-monospace'
-            type='text'
-            value={subInput[1]}
-            onChange={handleSubInputChange.bind(null, 1)}
-          />
-          {offset === 0 ? undefined : (
-            <span className='font-monospace ms-3'>
-              Shift: {offset}
-            </span>
-          )}
+          <a
+            className={`app-tab-link fw-bold ${tab === 0 ? 'active' : undefined}`.trim()}
+            href='#shift'
+            onClick={(e) => {
+              e.preventDefault()
+              setTab(0)
+            }}
+          >
+            Shift Substitution
+          </a>
+          <a
+            className={`app-tab-link fw-bold ${tab === 1 ? 'active' : undefined}`.trim()}
+            href='#affine'
+            onClick={(e) => {
+              e.preventDefault()
+              setTab(1)
+            }}
+          >
+            Affine Substitution
+          </a>
         </div>
+        {tab === 0 ? (
+          <div
+            className='app-sub font-monospace'
+          >
+            <input
+              id='app-sft-input-1'
+              className='app-sub-input app-sft-input'
+              type='text'
+              value={sftInput[0]}
+              spellCheck={false}
+              autoComplete='off'
+              onChange={handleSftInputChange.bind(null, 0, 'app-sft-input-2')}
+            />
+            <span>
+              &nbsp;&rarr;&nbsp;
+            </span>
+            <input
+              id='app-sft-input-2'
+              className='app-sub-input app-sft-input'
+              type='text'
+              value={sftInput[1]}
+              spellCheck={false}
+              autoComplete='off'
+              onChange={handleSftInputChange.bind(null, 1, undefined)}
+            />
+            {shift === 0 ? undefined : (
+              <span className='font-monospace ms-3'>
+                Shift: {shift}
+              </span>
+            )}
+          </div>
+        ) : (
+          <div
+            className='app-sub font-monospace'
+          >
+            <span>
+              Letter &times;&nbsp;
+            </span>
+            <input
+              className='app-sub-input app-aff-input'
+              type='text'
+              value={affInput[0]}
+              spellCheck={false}
+              autoComplete='off'
+              onChange={handleAffInputChange.bind(null, 0)}
+            />
+            <span>
+              &nbsp;+&nbsp;
+            </span>
+            <input
+              className='app-sub-input app-aff-input'
+              type='text'
+              value={affInput[1]}
+              spellCheck={false}
+              autoComplete='off'
+              onChange={handleAffInputChange.bind(null, 1)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
