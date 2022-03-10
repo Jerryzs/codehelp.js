@@ -1,0 +1,39 @@
+.app-section {
+  margin: 2rem 0;
+}
+
+.app-input {
+  display: block;
+  width: 100%;
+  min-height: 2.75em;
+  outline: none;
+  overflow: hidden;
+  resize: none;
+  line-height: 1.15em;
+}
+
+.app-file-button {
+  display: block;
+  padding: 0;
+  margin: 1rem auto;
+  max-width: 500px;
+}
+
+.app-distribution {
+  columns: 5rem;
+
+  span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+.app-sub-input {
+  border: none;
+  border-bottom: 0.1em solid #000000;
+  outline: none;
+  width: 1.75em;
+  text-align: center;
+}
