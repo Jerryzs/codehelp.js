@@ -115,7 +115,12 @@ function App () {
     const s = e.target.value.trim()
     if (s.includes('-') && s.substring(1).includes('-')) return
     const n = parseInt(s)
-    if (s.length !== 0 && s !== '-' && (isNaN(n) || (i === 0 && n === 0))) return
+    if (s.length !== 0
+        && s !== '-'
+        && (isNaN(n)
+          || (i === 0 && n === 0)
+          || Math.abs(n) > Number.MAX_SAFE_INTEGER))
+      return
     const a: [string, string] = [ ...affInput ]
     a[i] = s.length > 1 ? '' + n : s
     const [b, c] = [parseInt(a[0]), parseInt(a[1])]
