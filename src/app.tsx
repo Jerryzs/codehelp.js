@@ -60,6 +60,13 @@ function App () {
   }, [sftInput])
 
   useEffect(() => {
+    if (tab === 0)
+      document.getElementById('app-sft-input-1')?.focus()
+    if (tab === 1)
+      document.getElementById('app-aff-input-1')?.focus()
+  }, [tab])
+
+  useEffect(() => {
     if (tab === 0) {
       setOutput(substitute(input, shift))
     }
@@ -247,6 +254,7 @@ function App () {
               Letter &times;&nbsp;
             </span>
             <input
+              id='app-aff-input-1'
               className='app-sub-input app-aff-input'
               type='text'
               value={affInput[0]}
@@ -258,6 +266,7 @@ function App () {
               &nbsp;+&nbsp;
             </span>
             <input
+              id='app-aff-input-2'
               className='app-sub-input app-aff-input'
               type='text'
               value={affInput[1]}
