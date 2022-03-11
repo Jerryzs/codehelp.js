@@ -86,7 +86,11 @@ function App () {
     }
   }
 
-  const handleSftInputChange = (i: number, id: string | undefined, e: ChangeEvent<HTMLInputElement>) => {
+  const handleSftInputChange = (
+    i: number,
+    id: string | undefined,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
     const s = e.target.value.trim().toUpperCase()
     if (s.length > 1 || (s.length !== 0 && !letters.has(s))) return
     const a: [string, string] = [ ...sftInput ]
@@ -97,7 +101,10 @@ function App () {
     }
   }
 
-  const handleAffInputChange = (i: number, e: ChangeEvent<HTMLInputElement>) => {
+  const handleAffInputChange = (
+    i: number,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
     const s = e.target.value.trim()
     if (s.includes('-') && s.substring(1).includes('-')) return
     const n = parseInt(s)
