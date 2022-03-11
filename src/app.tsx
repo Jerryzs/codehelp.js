@@ -208,7 +208,6 @@ function App () {
         </button>
         <textarea
           readOnly
-          disabled
           className='app-output form-control'
           value={output}
           placeholder='Output...'
