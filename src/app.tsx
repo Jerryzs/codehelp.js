@@ -191,26 +191,22 @@ function App () {
         className='app-section'
       >
         <div>
-          <a
-            className={`app-tab-link fw-bold ${tab === 0 ? 'active' : undefined}`.trim()}
-            href='#shift'
-            onClick={(e) => {
-              e.preventDefault()
-              setTab(0)
-            }}
+          <button
+            className={`app-tab-link btn btn-link fw-bold ${
+              tab === 0 ? 'active' : ''
+            }`.trim()}
+            onClick={() => setTab(0)}
           >
             Shift Substitution
-          </a>
-          <a
-            className={`app-tab-link fw-bold ${tab === 1 ? 'active' : undefined}`.trim()}
-            href='#affine'
-            onClick={(e) => {
-              e.preventDefault()
-              setTab(1)
-            }}
+          </button>
+          <button
+            className={`app-tab-link btn btn-link fw-bold ${
+              tab === 1 ? 'active' : ''
+            }`.trim()}
+            onClick={() => setTab(1)}
           >
             Affine Substitution
-          </a>
+          </button>
         </div>
         {tab === 0 ? (
           <div
