@@ -1,1 +1,6 @@
 @import '~bootstrap/scss/bootstrap.scss';
+
+html, body, #root {
+  padding: 0.05px;
+  min-height: 100vh;
+}
