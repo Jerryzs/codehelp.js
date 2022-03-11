@@ -4,7 +4,7 @@ import gcd from './utilities/gcd'
 import substitute from './utilities/substitute'
 import './app.scss'
 
-import type { ChangeEvent } from 'react'
+import type { ChangeEvent, SyntheticEvent } from 'react'
 
 export const letters = new Set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 export const let2num = (s: string) => s.toUpperCase().charCodeAt(0) - 65 + 1
@@ -103,6 +103,10 @@ function App () {
       setOutput(substitute(input, b, a))
     }
   }, [tab, input, shift, affInput])
+
+  const inputSelectAll = (e: SyntheticEvent<HTMLInputElement>) => {
+    e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
+  }
 
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const el = e.target
@@ -268,6 +272,7 @@ function App () {
               value={sftInput[0]}
               spellCheck={false}
               autoComplete='off'
+              onFocus={inputSelectAll}
               onChange={handleSftInputChange.bind(null, 0, 'app-sft-input-2')}
             />
             <span>
@@ -280,6 +285,7 @@ function App () {
               value={sftInput[1]}
               spellCheck={false}
               autoComplete='off'
+              onFocus={inputSelectAll}
               onChange={handleSftInputChange.bind(null, 1, undefined)}
             />
             <span className='ms-5'>
@@ -291,6 +297,7 @@ function App () {
               value={shift}
               spellCheck={false}
               autoComplete='off'
+              onFocus={inputSelectAll}
               onChange={handleShiftChange}
             />
           </div>
@@ -308,6 +315,7 @@ function App () {
               value={affInput[0]}
               spellCheck={false}
               autoComplete='off'
+              onFocus={inputSelectAll}
               onChange={handleAffInputChange.bind(null, 0)}
             />
             <span>
@@ -320,6 +328,7 @@ function App () {
               value={affInput[1]}
               spellCheck={false}
               autoComplete='off'
+              onFocus={inputSelectAll}
               onChange={handleAffInputChange.bind(null, 1)}
             />
           </div>
