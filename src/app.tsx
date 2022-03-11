@@ -68,7 +68,9 @@ function App () {
 
   useEffect(() => {
     if (tab === 0) {
-      setOutput(substitute(input, shift))
+      let s = shift
+      if (isNaN(s)) s = 0
+      setOutput(substitute(input, s))
     }
     if (tab === 1) {
       const [a, b] = affInput.map((s) => parseInt(s))
@@ -106,6 +108,17 @@ function App () {
     if (id !== undefined && s.length !== 0) {
       (document.getElementById(id) as HTMLInputElement).focus()
     }
+  }
+
+  const handleShiftChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const s = e.target.value.trim()
+    if (s.includes('-') && s.substring(1).includes('-')) return
+    const n = parseInt(s)
+    if (s.length !== 0
+        && s !== '-'
+        && (isNaN(n) || Math.abs(n) > Number.MAX_SAFE_INTEGER))
+      return
+    setShift(n)
   }
 
   const handleAffInputChange = (
@@ -245,11 +258,17 @@ function App () {
               autoComplete='off'
               onChange={handleSftInputChange.bind(null, 1, undefined)}
             />
-            {shift === 0 ? undefined : (
-              <span className='font-monospace ms-3'>
-                Shift: {shift}
-              </span>
-            )}
+            <span className='ms-5'>
+              Shift:&nbsp;
+            </span>
+            <input
+              className='app-sub-input app-sft-direct-input'
+              type='text'
+              value={isNaN(shift) ? '' : shift}
+              spellCheck={false}
+              autoComplete='off'
+              onChange={handleShiftChange}
+            />
           </div>
         ) : (
           <div
