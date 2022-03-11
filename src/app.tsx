@@ -73,8 +73,9 @@ function App () {
       setOutput(substitute(input, s))
     }
     if (tab === 1) {
-      const [a, b] = affInput.map((s) => parseInt(s))
-      if (isNaN(a) || isNaN(b)) return
+      let [a, b] = affInput.map((s) => parseInt(s))
+      if (isNaN(a)) a = 1
+      if (isNaN(b)) b = 0
       setOutput(substitute(input, b, a))
     }
   }, [tab, input, shift, affInput])
