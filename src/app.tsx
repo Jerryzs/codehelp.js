@@ -8,8 +8,8 @@ import type { ChangeEvent } from 'react'
 
 export const letters = new Set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
 export const let2num = (s: string) => s.toUpperCase().charCodeAt(0) - 65 + 1
-export const num2let = (n: number) => String.fromCharCode(n + 65 - 1)
 export const mod = (n: number, m: number) => (((n % m) + m) % m)
+export const num2let = (n: number) => String.fromCharCode(mod(n - 1, 26) + 65)
 
 function App () {
   const [input, setInput] = useState('')
