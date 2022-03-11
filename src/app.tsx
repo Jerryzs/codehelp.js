@@ -20,16 +20,34 @@ function App () {
   const [shift, setShift] = useState(0)
   const [affInput, setAffInput] = useState<[string, string]>(['1', '0'])
 
-  const resize = () => {
-    const arr = document.getElementsByTagName('textarea')
-    for (const el of Array.from(arr)) {
-      el.style.height = '5px'
-      el.style.height = el.scrollHeight + 2 + 'px'
-    }
+  const resize = (el: HTMLTextAreaElement) => {
+    const scrollLeft = window.pageXOffset
+      || (document.documentElement
+        || document.body.parentNode
+        || document.body)
+        .scrollLeft
+    const scrollTop  = window.pageYOffset
+      || (document.documentElement
+        || document.body.parentNode
+        || document.body)
+        .scrollTop
+    el.style.height = 'auto'
+    el.style.height = el.scrollHeight + 2 + 'px'
+    document.documentElement.style.scrollBehavior = 'auto'
+    window.scrollTo(scrollLeft, scrollTop)
+    setTimeout(() => document.documentElement.style.scrollBehavior = '', 5)
   }
 
-  useEffect(() => setDist(distribution(input)), [input])
-  useEffect(() => resize(), [input, output])
+  useEffect(() => {
+    setDist(distribution(input))
+    resize(
+      document.getElementsByClassName('app-input')[0] as HTMLTextAreaElement)
+  }, [input])
+
+  useEffect(() => {
+    resize(
+      document.getElementsByClassName('app-output')[0] as HTMLTextAreaElement)
+  }, [output])
 
   useEffect(() => {
     const [a, b] = sftInput
@@ -108,10 +126,10 @@ function App () {
         </h1>
       </div>
       <div
-        className='app-section'
+        className='app-section font-monospace'
       >
         <textarea
-          className='app-input form-control font-monospace'
+          className='app-input form-control'
           value={input}
           placeholder='Ciphertext...'
           spellCheck={false}
@@ -126,7 +144,7 @@ function App () {
           onChange={handleFileUpload}
         />
         <button
-          className='app-file-button btn btn-link font-monospace'
+          className='app-file-button btn btn-link'
           onClick={() => document.getElementById('app-file-upload')?.click()}
         >
           Load a text file
@@ -134,7 +152,7 @@ function App () {
         <textarea
           readOnly
           disabled
-          className='app-input form-control bg-white font-monospace'
+          className='app-output form-control'
           value={output}
           placeholder='Output...'
           spellCheck={false}
