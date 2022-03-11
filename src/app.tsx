@@ -39,6 +39,30 @@ function App () {
   }
 
   useEffect(() => {
+    const handleWindowDragOver = (e: DragEvent) => {
+      e.preventDefault()
+    }
+
+    const handleWindowDrop = (e: DragEvent) => {
+      e.preventDefault()
+
+      const data = e.dataTransfer
+      if (data) (data.items
+          ? data.items[0].getAsFile()?.text()
+          : data.files[0].text())
+        ?.then(setInput)
+    }
+
+    window.addEventListener('dragover', handleWindowDragOver)
+    window.addEventListener('drop', handleWindowDrop)
+
+    return () => {
+      window.removeEventListener('dragover', handleWindowDragOver)
+      window.removeEventListener('drop', handleWindowDrop)
+    }
+  }, [])
+
+  useEffect(() => {
     setDist(distribution(input))
     resize(
       document.getElementsByClassName('app-input')[0] as HTMLTextAreaElement)
@@ -180,7 +204,7 @@ function App () {
           className='app-file-button btn btn-link'
           onClick={() => document.getElementById('app-file-upload')?.click()}
         >
-          Load a text file
+          Select or drop a text file
         </button>
         <textarea
           readOnly
