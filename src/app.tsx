@@ -17,7 +17,7 @@ function App () {
   const [dist, setDist] = useState<NodeJS.Dict<number>>({})
   const [tab, setTab] = useState(0)
   const [sftInput, setSftInput] = useState<[string, string]>(['', ''])
-  const [shift, setShift] = useState(0)
+  const [shift, setShift] = useState('0')
   const [affInput, setAffInput] = useState<[string, string]>(['1', '0'])
 
   const resize = (el: HTMLTextAreaElement) => {
@@ -52,11 +52,11 @@ function App () {
   useEffect(() => {
     const [a, b] = sftInput
     if (a === '' || b === '') {
-      setShift(0)
+      setShift('0')
       return
     }
     const os = let2num(b) - let2num(a)
-    setShift(os)
+    setShift('' + os)
   }, [sftInput])
 
   useEffect(() => {
@@ -68,7 +68,7 @@ function App () {
 
   useEffect(() => {
     if (tab === 0) {
-      let s = shift
+      let s = parseInt(shift)
       if (isNaN(s)) s = 0
       setOutput(substitute(input, s))
     }
@@ -118,7 +118,7 @@ function App () {
         && s !== '-'
         && (isNaN(n) || Math.abs(n) > Number.MAX_SAFE_INTEGER))
       return
-    setShift(n)
+    setShift(s.length > 1 ? '' + n : s)
   }
 
   const handleAffInputChange = (
@@ -264,7 +264,7 @@ function App () {
             <input
               className='app-sub-input app-sft-direct-input'
               type='text'
-              value={isNaN(shift) ? '' : shift}
+              value={shift}
               spellCheck={false}
               autoComplete='off'
               onChange={handleShiftChange}
