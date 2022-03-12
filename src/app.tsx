@@ -251,27 +251,6 @@ function App () {
           autoComplete='off'
         />
       </div>
-      {!input ? undefined : (
-        <>
-          <div
-            className='app-section'
-          >
-            <div
-              className='app-distribution-heading fw-bold'
-            >
-              Letter Distribution
-            </div>
-            <div className='app-distribution font-monospace'>
-              {Object.keys(dist).map((k) => (
-                <span key={`LD_${k}`}>
-                  {`${k}: ${dist[k]}`}
-                </span>
-              ))}
-              <span className='flex-grow-1'></span>
-            </div>
-          </div>
-        </>
-      )}
       <div
         className='app-section app-action'
       >
@@ -432,6 +411,34 @@ function App () {
           </div>
         </div>
       </div>
+      {!input ? undefined : (
+        <>
+          <div
+            className='app-section'
+          >
+            <div
+              className='app-distribution-heading fw-bold'
+            >
+              Letter Distribution
+            </div>
+            <div
+              className='app-distribution font-monospace'
+            >
+              {Object.keys(dist).map((k) => (
+                <span
+                  key={`letter-dist_${k}`}
+                  title={`${k}: ${dist[k]}`}
+                >
+                  {`${k}: ${dist[k]}`}
+                </span>
+              ))}
+              <span
+                className='flex-grow-1'
+              />
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
