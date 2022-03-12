@@ -16,7 +16,6 @@
   overflow: hidden;
   resize: none;
   line-height: 1.25em;
-  -webkit-text-fill-color: #000000;
 }
 
 .app-file-button {
@@ -24,6 +23,11 @@
   padding: 0;
   margin: 1rem auto;
   max-width: 500px;
+  user-select: auto;
+
+  &:focus {
+    box-shadow: none;
+  }
 }
 
 .app-distribution {
@@ -70,7 +74,7 @@
   }
 
   &.active {
-    color: var(--bs-body-color);
+    color: $body-color;
     text-decoration: none;
     cursor: default;
   }
