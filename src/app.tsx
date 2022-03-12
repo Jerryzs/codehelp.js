@@ -228,6 +228,8 @@ function App () {
           placeholder='Ciphertext...'
           spellCheck={false}
           autoComplete='off'
+          autoCorrect='off'
+          autoCapitalize='off'
           onChange={handleInputChange}
         />
         <input
@@ -250,6 +252,8 @@ function App () {
           placeholder='Output...'
           spellCheck={false}
           autoComplete='off'
+          autoCorrect='off'
+          autoCapitalize='off'
         />
       </div>
       <div
@@ -297,6 +301,8 @@ function App () {
                 value={sftInput[0]}
                 spellCheck={false}
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 onFocus={inputSelectAll}
                 onChange={handleSftInputChange.bind(null, 0, 'app-sft-input-2')}
               />
@@ -310,6 +316,8 @@ function App () {
                 value={sftInput[1]}
                 spellCheck={false}
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 onFocus={inputSelectAll}
                 onChange={handleSftInputChange.bind(null, 1, undefined)}
               />
@@ -325,6 +333,8 @@ function App () {
                 value={shift}
                 spellCheck={false}
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 onFocus={inputSelectAll}
                 onChange={handleShiftChange}
               />
@@ -343,6 +353,8 @@ function App () {
                 value={affInput[0]}
                 spellCheck={false}
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 onFocus={inputSelectAll}
                 onChange={handleAffInputChange.bind(null, 0)}
               />
@@ -356,6 +368,8 @@ function App () {
                 value={affInput[1]}
                 spellCheck={false}
                 autoComplete='off'
+                autoCorrect='off'
+                autoCapitalize='off'
                 onFocus={inputSelectAll}
                 onChange={handleAffInputChange.bind(null, 1)}
               />
