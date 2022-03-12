@@ -95,30 +95,31 @@ function App () {
   }, [tab])
 
   useEffect(() => {
-    let d
+    let alpha
+
     if (tab === 0) {
       let s = parseInt(shift)
       if (isNaN(s)) s = 0
-      d = substitute(alphabet, s)
+      alpha = substitute(alphabet, s)
     }
     if (tab === 1) {
       let [a, b] = affInput.map((s) => parseInt(s))
       if (isNaN(a)) a = 1
       if (isNaN(b)) b = 0
-      d = substitute(alphabet, b, a)
+      alpha = substitute(alphabet, b, a)
     }
 
-    if (d) {
-      const arr = Array.from(d)
-        .map((l) => let2num(l) - 1)
-      const obj = mapState === 0
-        ? arr
-        : arr.reduce<Record<number, number>>((o, n, i) => ({ ...o, [n]: i }), {})
-      const cip = Object.values(obj)
-        .sort((a, b) => obj[a] - obj[b])
-        .map((n) => num2let(n + 1))
-        .join('')
-      setMapAlpha(cip)
+    if (alpha) {
+      if (mapState === 0) {
+        const arr = Array.from(alpha)
+          .map((l) => let2num(l) - 1)
+        alpha = Object.values(arr)
+          .sort((a, b) => arr[a] - arr[b])
+          .map((n) => num2let(n + 1))
+          .join('')
+      }
+
+      setMapAlpha(alpha)
     }
   }, [tab, shift, affInput, mapState])
 
