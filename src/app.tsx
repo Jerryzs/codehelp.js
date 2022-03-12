@@ -6,7 +6,9 @@ import './app.scss'
 
 import type { ChangeEvent, SyntheticEvent } from 'react'
 
-export const letters = new Set('ABCDEFGHIJKLMNOPQRSTUVWXYZ')
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+export const letters = new Set(alphabet)
 export const let2num = (s: string) => s.toUpperCase().charCodeAt(0) - 65 + 1
 export const mod = (n: number, m: number) => (((n % m) + m) % m)
 export const num2let = (n: number) => String.fromCharCode(mod(n - 1, 26) + 65)
@@ -19,6 +21,8 @@ function App () {
   const [sftInput, setSftInput] = useState<[string, string]>(['', ''])
   const [shift, setShift] = useState('0')
   const [affInput, setAffInput] = useState<[string, string]>(['1', '0'])
+  const [mapState, setMapState] = useState(0)
+  const [mapAlpha, setMapAlpha] = useState(alphabet)
 
   const resize = (el: HTMLTextAreaElement) => {
     const scrollLeft = window.pageXOffset
@@ -89,6 +93,34 @@ function App () {
     if (tab === 1)
       document.getElementById('app-aff-input-1')?.focus()
   }, [tab])
+
+  useEffect(() => {
+    let d
+    if (tab === 0) {
+      let s = parseInt(shift)
+      if (isNaN(s)) s = 0
+      d = substitute(alphabet, s)
+    }
+    if (tab === 1) {
+      let [a, b] = affInput.map((s) => parseInt(s))
+      if (isNaN(a)) a = 1
+      if (isNaN(b)) b = 0
+      d = substitute(alphabet, b, a)
+    }
+
+    if (d) {
+      const arr = Array.from(d)
+        .map((l) => let2num(l) - 1)
+      const obj = mapState === 0
+        ? arr
+        : arr.reduce<Record<number, number>>((o, n, i) => ({ ...o, [n]: i }), {})
+      const cip = Object.values(obj)
+        .sort((a, b) => obj[a] - obj[b])
+        .map((n) => num2let(n + 1))
+        .join('')
+      setMapAlpha(cip)
+    }
+  }, [tab, shift, affInput, mapState])
 
   useEffect(() => {
     if (tab === 0) {
@@ -224,11 +256,11 @@ function App () {
           <div
             className='app-section'
           >
-            <span
-              className='fw-bold'
+            <div
+              className='app-distribution-heading fw-bold'
             >
               Letter Distribution
-            </span>
+            </div>
             <div className='app-distribution font-monospace'>
               {Object.keys(dist).map((k) => (
                 <span key={`LD_${k}`}>
@@ -241,98 +273,164 @@ function App () {
         </>
       )}
       <div
-        className='app-section'
+        className='app-section app-action'
       >
         <div>
-          <button
-            className={`app-tab-link btn btn-link fw-bold ${
-              tab === 0 ? 'active' : ''
-            }`.trim()}
-            onClick={() => setTab(0)}
+          <div
+            className='fw-bold'
           >
-            Shift Substitution
-          </button>
-          <button
-            className={`app-tab-link btn btn-link fw-bold ${
-              tab === 1 ? 'active' : ''
-            }`.trim()}
-            onClick={() => setTab(1)}
-          >
-            Affine Substitution
-          </button>
+            <span
+              className='me-2'
+            >
+              Substitution
+            </span>
+            <span>
+              (
+              <button
+                className={`app-tab-link btn btn-link ${
+                  tab === 0 ? 'active' : ''
+                }`.trim()}
+                onClick={() => setTab(0)}
+              >
+                Shift
+              </button>
+              /
+              <button
+                className={`app-tab-link btn btn-link ${
+                  tab === 1 ? 'active' : ''
+                }`.trim()}
+                onClick={() => setTab(1)}
+              >
+                Affine
+              </button>
+              )
+            </span>
+          </div>
+          {tab === 0 ? (
+            <div
+              className='app-sub font-monospace'
+            >
+              <input
+                id='app-sft-input-1'
+                className='app-sub-input app-sft-input'
+                type='text'
+                value={sftInput[0]}
+                spellCheck={false}
+                autoComplete='off'
+                onFocus={inputSelectAll}
+                onChange={handleSftInputChange.bind(null, 0, 'app-sft-input-2')}
+              />
+              <span>
+                &nbsp;&rarr;&nbsp;
+              </span>
+              <input
+                id='app-sft-input-2'
+                className='app-sub-input app-sft-input'
+                type='text'
+                value={sftInput[1]}
+                spellCheck={false}
+                autoComplete='off'
+                onFocus={inputSelectAll}
+                onChange={handleSftInputChange.bind(null, 1, undefined)}
+              />
+              <span
+                className='me-5'
+              />
+              <span>
+                Shift:&nbsp;
+              </span>
+              <input
+                className='app-sub-input app-sft-direct-input'
+                type='text'
+                value={shift}
+                spellCheck={false}
+                autoComplete='off'
+                onFocus={inputSelectAll}
+                onChange={handleShiftChange}
+              />
+            </div>
+          ) : (
+            <div
+              className='app-sub font-monospace'
+            >
+              <span>
+                Letter &times;&nbsp;
+              </span>
+              <input
+                id='app-aff-input-1'
+                className='app-sub-input app-aff-input'
+                type='text'
+                value={affInput[0]}
+                spellCheck={false}
+                autoComplete='off'
+                onFocus={inputSelectAll}
+                onChange={handleAffInputChange.bind(null, 0)}
+              />
+              <span>
+                &nbsp;+&nbsp;
+              </span>
+              <input
+                id='app-aff-input-2'
+                className='app-sub-input app-aff-input'
+                type='text'
+                value={affInput[1]}
+                spellCheck={false}
+                autoComplete='off'
+                onFocus={inputSelectAll}
+                onChange={handleAffInputChange.bind(null, 1)}
+              />
+            </div>
+          )}
         </div>
-        {tab === 0 ? (
+        <div>
           <div
-            className='app-sub font-monospace'
+            className='fw-bold'
           >
-            <input
-              id='app-sft-input-1'
-              className='app-sub-input app-sft-input'
-              type='text'
-              value={sftInput[0]}
-              spellCheck={false}
-              autoComplete='off'
-              onFocus={inputSelectAll}
-              onChange={handleSftInputChange.bind(null, 0, 'app-sft-input-2')}
-            />
+            <span
+              className='me-2'
+            >
+              Substitution Map
+            </span>
             <span>
-              &nbsp;&rarr;&nbsp;
+              (
+              <button
+                className='app-cipher-map-switch btn btn-link fw-bold'
+                onClick={() => mapState === 0 ? setMapState(1) : setMapState(0)}
+              >
+                Swap
+              </button>
+              )
             </span>
-            <input
-              id='app-sft-input-2'
-              className='app-sub-input app-sft-input'
-              type='text'
-              value={sftInput[1]}
-              spellCheck={false}
-              autoComplete='off'
-              onFocus={inputSelectAll}
-              onChange={handleSftInputChange.bind(null, 1, undefined)}
-            />
-            <span className='ms-5'>
-              Shift:&nbsp;
-            </span>
-            <input
-              className='app-sub-input app-sft-direct-input'
-              type='text'
-              value={shift}
-              spellCheck={false}
-              autoComplete='off'
-              onFocus={inputSelectAll}
-              onChange={handleShiftChange}
-            />
           </div>
-        ) : (
           <div
-            className='app-sub font-monospace'
+            className='app-cipher-map font-monospace'
           >
-            <span>
-              Letter &times;&nbsp;
-            </span>
-            <input
-              id='app-aff-input-1'
-              className='app-sub-input app-aff-input'
-              type='text'
-              value={affInput[0]}
-              spellCheck={false}
-              autoComplete='off'
-              onFocus={inputSelectAll}
-              onChange={handleAffInputChange.bind(null, 0)}
-            />
-            <span>
-              &nbsp;+&nbsp;
-            </span>
-            <input
-              id='app-aff-input-2'
-              className='app-sub-input app-aff-input'
-              type='text'
-              value={affInput[1]}
-              spellCheck={false}
-              autoComplete='off'
-              onFocus={inputSelectAll}
-              onChange={handleAffInputChange.bind(null, 1)}
-            />
+            <div
+              className='fw-bold'
+            >
+              <span>
+                Ciphered:&nbsp;
+              </span>
+              <span>
+                Plain:&nbsp;
+              </span>
+            </div>
+            <div
+              className='overflow-auto'
+            >
+              <span
+                className='app-cipher-map-alphabet'
+              >
+                {mapState === 0 ? mapAlpha : alphabet}
+              </span>
+              <span
+                className='app-cipher-map-alphabet'
+              >
+                {mapState === 1 ? mapAlpha : alphabet}
+              </span>
+            </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

@@ -33,21 +33,46 @@
   }
 }
 
+.app-distribution-heading {
+  margin-bottom: 0.75rem;
+}
+
+.app-action {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  > div {
+    max-width: 100%;
+    flex-basis: 50%;
+    flex-grow: 1;
+    margin-bottom: 2rem;
+  }
+}
+
 .app-tab-link {
-  margin-right: 1rem;
   padding: 0;
+  font-weight: 700;
+  vertical-align: baseline;
+  user-select: auto;
+
+  &:focus {
+    box-shadow: none;
+  }
 
   &.active {
-    color: #000000;
+    color: var(--bs-body-color);
     text-decoration: none;
     cursor: default;
   }
 }
 
 .app-sub {
+  margin-top: 0.25rem;
+
   span {
     display: inline-block;
-    margin-top: 0.75em;
+    margin-top: 0.75rem;
   }
 }
 
@@ -59,14 +84,37 @@
   text-align: center;
 
   &.app-sft-input {
-    width: 1.75em;
+    width: 1.92em;
   }
 
   &.app-sft-direct-input {
-    width: 2.5em;
+    width: 3.5em;
   }
 
   &.app-aff-input {
     width: 5em;
+  }
+}
+
+.app-cipher-map {
+  display: flex;
+  flex-direction: row;
+
+  span {
+    display: block;
+  }
+}
+
+.app-cipher-map-alphabet {
+  letter-spacing: 0.25em;
+}
+
+.app-cipher-map-switch {
+  padding: 0;
+  vertical-align: baseline;
+  user-select: auto;
+
+  &:focus {
+    box-shadow: none;
   }
 }
