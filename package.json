@@ -2,7 +2,7 @@
   "name": "codehelp-js",
   "version": "0.1.0",
   "private": true,
-  "license": "UNLICENSE",
+  "license": "Apache-2.0",
   "homepage": "https://jerryzs.github.io/codehelp.js",
   "dependencies": {
     "bootstrap": "^5.1.3",
