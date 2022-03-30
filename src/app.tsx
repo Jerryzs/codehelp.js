@@ -454,6 +454,27 @@ function App () {
           </div>
         </>
       )}
+      <div className='app-section font-monospace small text-muted'>
+        Created by Jerry, Class of 2022 at&nbsp;
+        <a
+          className='text-reset'
+          href='https://www.winchesterthurston.org'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          Winchester Thurston School
+        </a>.
+        <br />
+        Source code available on&nbsp;
+        <a
+          className='text-reset'
+          href='https://github.com/Jerryzs/codehelp.js'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          Github
+        </a>.
+      </div>
     </div>
   );
 }
