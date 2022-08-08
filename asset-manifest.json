@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/codehelp.js/static/css/main.f64b70be.css",
+    "main.js": "/codehelp.js/static/js/main.bb85ec1b.js",
+    "index.html": "/codehelp.js/index.html",
+    "main.f64b70be.css.map": "/codehelp.js/static/css/main.f64b70be.css.map",
+    "main.bb85ec1b.js.map": "/codehelp.js/static/js/main.bb85ec1b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f64b70be.css",
+    "static/js/main.bb85ec1b.js"
+  ]
+}
