@@ -196,14 +196,14 @@ function App () {
           || (i === 0 && n === 0)
           || Math.abs(n) > Number.MAX_SAFE_INTEGER))
       return
-    const a: [string, string] = [ ...affInput ]
-    a[i] = s.length > 1 ? '' + n : s
-    const [b, c] = [parseInt(a[0]), parseInt(a[1])]
-    if (!isNaN(b) && !isNaN(c) && c > 0 && gcd(b, c) !== 1) {
-      alert(`${b} and ${c} are not relatively prime.`)
+    const t: [string, string] = [ ...affInput ]
+    t[i] = s.length > 1 ? '' + n : s
+    const [a, b] = t.map((i) => parseInt(i))
+    if (!isNaN(a) && !isNaN(b) && b > 0 && gcd(a, b) !== 1) {
+      alert(`${a} and ${b} must be relatively prime.`)
       return
     }
-    setAffInput(a)
+    setAffInput(t)
   }
 
   return (
