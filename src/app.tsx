@@ -198,8 +198,8 @@ function App () {
       return
     const t: [string, string] = [ ...affInput ]
     t[i] = s.length > 1 ? '' + n : s
-    const [a, b] = t.map((i) => parseInt(i))
-    if (!isNaN(a) && !isNaN(b) && b > 0 && gcd(a, 26) !== 1) {
+    const a = parseInt(t[0])
+    if (!isNaN(a) && gcd(a, 26) !== 1) {
       alert(`${a} and 26 must be relatively prime.`)
       return
     }
