@@ -199,8 +199,8 @@ function App () {
     const t: [string, string] = [ ...affInput ]
     t[i] = s.length > 1 ? '' + n : s
     const [a, b] = t.map((i) => parseInt(i))
-    if (!isNaN(a) && !isNaN(b) && b > 0 && gcd(a, b) !== 1) {
-      alert(`${a} and ${b} must be relatively prime.`)
+    if (!isNaN(a) && !isNaN(b) && b > 0 && gcd(a, 26) !== 1) {
+      alert(`${a} and 26 must be relatively prime.`)
       return
     }
     setAffInput(t)
