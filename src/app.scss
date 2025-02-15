@@ -12,7 +12,6 @@
   background-color: #ffffff !important;
   display: block;
   width: 100%;
-  outline: none;
   overflow: hidden;
   resize: none;
   line-height: 1.25em;
@@ -24,10 +23,6 @@
   margin: 1rem auto;
   max-width: 500px;
   user-select: auto;
-
-  &:focus {
-    box-shadow: none;
-  }
 }
 
 .app-distribution {
@@ -68,10 +63,6 @@
   font-weight: 700;
   vertical-align: baseline;
   user-select: auto;
-
-  &:focus {
-    box-shadow: none;
-  }
 
   &.active {
     color: $body-color;
@@ -126,8 +117,4 @@
   padding: 0;
   vertical-align: baseline;
   user-select: auto;
-
-  &:focus {
-    box-shadow: none;
-  }
 }
