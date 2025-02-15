@@ -455,14 +455,14 @@ function App () {
         </>
       )}
       <div className='app-section font-monospace small text-muted'>
-        Created by Jerry, Class of 2022 at&nbsp;
+        Created by Jerry in 2022, while at&nbsp;
         <a
           className='text-reset'
           href='https://www.winchesterthurston.org'
           target='_blank'
           rel='noopener noreferrer'
         >
-          Winchester Thurston School
+          Winchester Thurston School, Pittsburgh, PA
         </a>.
         <br />
         Source code available on&nbsp;
