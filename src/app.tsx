@@ -24,6 +24,7 @@ function App () {
   const [mapState, setMapState] = useState(0)
   const [mapAlpha, setMapAlpha] = useState(alphabet)
   const [reverseOut, setReverseOut] = useState(0)
+  const [notCoprime, setNotCoprime] = useState(false)
 
   const resize = (el: HTMLTextAreaElement) => {
     const scrollLeft = window.pageXOffset
@@ -96,6 +97,8 @@ function App () {
   }, [tab])
 
   useEffect(() => {
+    if (notCoprime) return
+
     let alpha
 
     if (tab === 0) {
@@ -122,13 +125,15 @@ function App () {
 
       setMapAlpha(alpha)
     }
-  }, [tab, shift, affInput, mapState])
+  }, [tab, shift, affInput, mapState, notCoprime])
 
   useEffect(() => {
-      (reverseOut ? setInput : setOutput)(
-          applyMap(reverseOut ? output : input, mapAlpha, !(mapState ^ reverseOut)))
-      setReverseOut(0)
-  }, [input, output, reverseOut, mapAlpha])
+    if (notCoprime) return
+
+    (reverseOut ? setInput : setOutput)(
+      applyMap(reverseOut ? output : input, mapAlpha, !(mapState ^ reverseOut)))
+    setReverseOut(0)
+  }, [input, output, reverseOut, mapAlpha, mapState, notCoprime])
 
   const inputSelectAll = (e: SyntheticEvent<HTMLInputElement>) => {
     e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
@@ -141,7 +146,7 @@ function App () {
 
   const handleOutputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const el = e.target
-    setReverseOut(1)
+    if (!notCoprime) setReverseOut(1)
     setOutput(el.value)
   }
 
@@ -198,10 +203,7 @@ function App () {
     const t: [string, string] = [ ...affInput ]
     t[i] = s.length > 1 ? '' + n : s
     const a = parseInt(t[0])
-    if (!isNaN(a) && gcd(a, 26) !== 1) {
-      alert(`${a} and 26 must be relatively prime.`)
-      return
-    }
+    setNotCoprime(!isNaN(a) && gcd(a, 26) !== 1)
     setAffInput(t)
   }
 
@@ -373,6 +375,9 @@ function App () {
                 onChange={handleAffInputChange.bind(null, 1)}
               />
             </div>
+          )}
+          {!notCoprime ? null : (
+            <div className="text-danger font-monospace">{`${affInput[0]} and 26 are not coprime.`}</div>
           )}
         </div>
         <div>
