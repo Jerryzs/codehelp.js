@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import distribution from './utilities/distribution'
 import gcd from './utilities/gcd'
-import substitute from './utilities/substitute'
+import { applyMap, substitute } from './utilities/substitute'
 import './app.scss'
 
 import type { ChangeEvent, SyntheticEvent } from 'react'
 
-const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+export const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 
 export const letters = new Set(alphabet)
 export const let2num = (s: string) => s.toUpperCase().charCodeAt(0) - 65 + 1
@@ -23,6 +23,7 @@ function App () {
   const [affInput, setAffInput] = useState<[string, string]>(['1', '0'])
   const [mapState, setMapState] = useState(0)
   const [mapAlpha, setMapAlpha] = useState(alphabet)
+  const [reverseOut, setReverseOut] = useState(0)
 
   const resize = (el: HTMLTextAreaElement) => {
     const scrollLeft = window.pageXOffset
@@ -124,18 +125,10 @@ function App () {
   }, [tab, shift, affInput, mapState])
 
   useEffect(() => {
-    if (tab === 0) {
-      let s = parseInt(shift)
-      if (isNaN(s)) s = 0
-      setOutput(substitute(input, s))
-    }
-    if (tab === 1) {
-      let [a, b] = affInput.map((s) => parseInt(s))
-      if (isNaN(a)) a = 1
-      if (isNaN(b)) b = 0
-      setOutput(substitute(input, b, a))
-    }
-  }, [tab, input, shift, affInput])
+      (reverseOut ? setInput : setOutput)(
+          applyMap(reverseOut ? output : input, mapAlpha, !(mapState ^ reverseOut)))
+      setReverseOut(0)
+  }, [input, output, reverseOut, mapAlpha])
 
   const inputSelectAll = (e: SyntheticEvent<HTMLInputElement>) => {
     e.currentTarget.setSelectionRange(0, e.currentTarget.value.length)
@@ -144,6 +137,12 @@ function App () {
   const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     const el = e.target
     setInput(el.value)
+  }
+
+  const handleOutputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const el = e.target
+    setReverseOut(1)
+    setOutput(el.value)
   }
 
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
@@ -246,7 +245,6 @@ function App () {
           Select or drop a text file
         </button>
         <textarea
-          readOnly
           className='app-output form-control'
           value={output}
           placeholder='Output...'
@@ -254,6 +252,7 @@ function App () {
           autoComplete='off'
           autoCorrect='off'
           autoCapitalize='off'
+          onChange={handleOutputChange}
         />
       </div>
       <div
