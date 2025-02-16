@@ -459,6 +459,50 @@ function App () {
         </>
       )}
       <div className='app-section font-monospace small text-muted'>
+        <b>Important note:</b>
+        <br />
+        This web application implements a subset of features from Todd Feil's&nbsp;
+        <a
+          className='text-reset'
+          href='http://personal.denison.edu/~feil/codehelp'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          CodeHelp
+        </a>
+        , which applies the affine cipher in ways that differ from its usual
+        definition. More specifically,
+        <ul>
+          <li>
+            it maps the alphabet to integers starting from 1 (and not 0; mod is
+            performed after subtracting 1); and
+          </li>
+          <li>
+            it applies the encrypt (not decrypt) algorithm to the cipher
+            text.
+          </li>
+        </ul>
+        For information about the affine cipher,&nbsp;
+        <a
+          className='text-reset'
+          href='https://en.wikipedia.org/wiki/Affine_cipher'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          Wikipedia
+        </a>
+        &nbsp;gives a good overview and links to&nbsp;
+        <a
+          className='text-reset'
+          href='https://pi.math.cornell.edu/~kozdron/Teaching/Cornell/135Summer06/Handouts/affine.pdf'
+          target='_blank'
+          rel='noopener noreferrer'
+        >
+          this lecture material from Cornell University
+        </a>
+        .
+      </div>
+      <div className='app-section font-monospace small text-muted'>
         Created by Jerry in 2022, while at&nbsp;
         <a
           className='text-reset'
