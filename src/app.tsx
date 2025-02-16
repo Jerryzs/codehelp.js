@@ -226,7 +226,7 @@ function App () {
         <textarea
           className='app-input form-control'
           value={input}
-          placeholder='Ciphertext...'
+          placeholder='Cipher text'
           spellCheck={false}
           autoComplete='off'
           autoCorrect='off'
@@ -249,7 +249,7 @@ function App () {
         <textarea
           className='app-output form-control'
           value={output}
-          placeholder='Output...'
+          placeholder='Plain text'
           spellCheck={false}
           autoComplete='off'
           autoCorrect='off'
@@ -345,7 +345,7 @@ function App () {
               className='app-sub font-monospace'
             >
               <span>
-                Letter &times;&nbsp;
+                Ciphered &times;&nbsp;
               </span>
               <input
                 id='app-aff-input-1'
